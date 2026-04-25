@@ -117,7 +117,7 @@ class TestConstitutionContext:
     def _make_ctx(self) -> ConstitutionContext:
         c = Constitution.from_dict({
             "business": {
-                "legal_name": "Wender Media",
+                "legal_name": "Arnold Wender",
                 "home_address": {"addressLocality": "Halle (Saale)"},
             },
         })
@@ -125,7 +125,7 @@ class TestConstitutionContext:
 
     def test_get_existing(self) -> None:
         ctx = self._make_ctx()
-        assert ctx.get("business.legal_name") == "Wender Media"
+        assert ctx.get("business.legal_name") == "Arnold Wender"
 
     def test_get_nested(self) -> None:
         ctx = self._make_ctx()
@@ -145,7 +145,7 @@ class TestConstitutionContext:
 
     def test_require_present(self) -> None:
         ctx = self._make_ctx()
-        assert ctx.require("business.legal_name") == "Wender Media"
+        assert ctx.require("business.legal_name") == "Arnold Wender"
 
     def test_require_missing_raises_policy_reject(self) -> None:
         ctx = self._make_ctx()

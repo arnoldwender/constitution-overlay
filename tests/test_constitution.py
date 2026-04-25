@@ -33,11 +33,11 @@ class TestFromDict:
 
 class TestFromYaml:
     def test_loads_file(self, tmp_path: Path) -> None:
-        config = {"business": {"legal_name": "Wender Media"}}
+        config = {"business": {"legal_name": "Arnold Wender"}}
         p = tmp_path / "constitution.yaml"
         p.write_text(yaml.dump(config))
         c = Constitution.from_yaml(p)
-        assert c.get("business.legal_name") == "Wender Media"
+        assert c.get("business.legal_name") == "Arnold Wender"
 
     def test_accepts_str_path(self, tmp_path: Path) -> None:
         p = tmp_path / "c.yaml"
@@ -59,7 +59,7 @@ class TestFromYaml:
         config = {
             "business": {
                 "model": "remote-services",
-                "legal_name": "Wender Media",
+                "legal_name": "Arnold Wender",
                 "home_address": {
                     "addressLocality": "Halle (Saale)",
                     "postalCode": "06110",
@@ -98,9 +98,9 @@ class TestFromLayers:
         base_yaml = {"business": {"legal_name": "Acme"}}
         p = tmp_path / "base.yaml"
         p.write_text(yaml.dump(base_yaml))
-        overlay = {"business": {"legal_name": "Wender Media"}}
+        overlay = {"business": {"legal_name": "Arnold Wender"}}
         c = Constitution.from_layers(str(p), overlay)
-        assert c.get("business.legal_name") == "Wender Media"
+        assert c.get("business.legal_name") == "Arnold Wender"
 
     def test_pathlib_path(self, tmp_path: Path) -> None:
         p = tmp_path / "layer.yaml"

@@ -10,7 +10,7 @@ from constitution_overlay import Constitution, PolicyReject, halt_on_reject
 
 BASE: dict = {
     "business": {
-        "legal_name": "Wender Media",
+        "legal_name": "Arnold Wender",
         "home_address": {
             "streetAddress": "Franckestrasse 3a",
             "addressLocality": "Halle (Saale)",

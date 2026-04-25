@@ -43,3 +43,7 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Internal session files (not for public repo)
+NEW-SESSION-PROMPT.md
+BLOG-DRAFT.md
