@@ -11,6 +11,14 @@ authors:
 version: 0.1.0
 date-released: 2026-04-25
 license: MIT
+doi: 10.5281/zenodo.19773588
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.19773588
+    description: "Concept DOI (always resolves to latest release)"
+  - type: doi
+    value: 10.5281/zenodo.19773589
+    description: "Version DOI for v0.1.0"
 repository-code: "https://github.com/arnoldwender/constitution-overlay"
 url: "https://github.com/arnoldwender/constitution-overlay"
 keywords:

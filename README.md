@@ -1,5 +1,9 @@
 # constitution-overlay
 
+[![DOI](https://zenodo.org/badge/1221119784.svg)](https://doi.org/10.5281/zenodo.19773588)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+
 **Kustomize-style merge of YAML rule layers + halt-on-reject enforced executor-side.**
 
 A small, framework-agnostic Python library (~300 lines) that gives agentic systems two things:
