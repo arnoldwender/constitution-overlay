@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "constitution-overlay"
+version = "0.0.1"
+description = "Constitution + corrections overlay for agentic systems. Kustomize-style merge with halt-on-reject enforced executor-side."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Arnold Wender" }]
+requires-python = ">=3.11"
+keywords = ["llm", "agents", "policy", "constitution", "kustomize", "anthropic", "claude", "langgraph"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+    "mypy>=1.8",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/constitution_overlay"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
