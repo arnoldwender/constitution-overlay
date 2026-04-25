@@ -10,11 +10,11 @@ from constitution_overlay import Constitution, PolicyReject, halt_on_reject
 
 BASE: dict = {
     "business": {
-        "legal_name": "Arnold Wender",
-        "home_address": {
-            "streetAddress": "Franckestrasse 3a",
-            "addressLocality": "Halle (Saale)",
-            "postalCode": "06110",
+        "legal_name": "Acme GmbH",
+        "address": {
+            "streetAddress": "Musterstrasse 1",
+            "addressLocality": "Berlin",
+            "postalCode": "10115",
             "addressCountry": "DE",
         },
     },
@@ -42,7 +42,7 @@ constitution = Constitution.from_layers(BASE, CORRECTIONS)
 
 print("Merged constitution:")
 print(f"  legal_name           : {constitution.get('business.legal_name')}")
-print(f"  addressLocality      : {constitution.get('business.home_address.addressLocality')}")
+print(f"  addressLocality      : {constitution.get('business.address.addressLocality')}")
 print(f"  max_files_per_commit : {constitution.get('limits.max_files_per_commit')}")
 print(f"  no_force_push        : {constitution.get('limits.no_force_push')}")
 
@@ -76,11 +76,11 @@ except PolicyReject as e:
     print(f"  halted: {e}")
 
 print("\nTest: clean copy — should pass")
-write_copy("Professionelle Webentwicklung in Halle (Saale)")
+write_copy("Professionelle Softwareentwicklung in Berlin")
 
 print("\nTest: prohibited term — should reject")
 try:
-    write_copy("Der billigste Webdesigner in Halle")
+    write_copy("Der billigste Entwickler in Berlin")
 except PolicyReject as e:
     print(f"  halted: {e}")
 

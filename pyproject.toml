@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "constitution-overlay"
-version = "0.0.1"
+version = "0.1.0"
 description = "Constitution + corrections overlay for agentic systems. Kustomize-style merge with halt-on-reject enforced executor-side."
 readme = "README.md"
 license = { text = "MIT" }

@@ -136,7 +136,7 @@ from constitution_overlay import (
 
 ## 8. Roadmap
 
-- **v0.0.1** — scaffold (this commit).
-- **v0.1.0** — working merge + halt_on_reject + 1 realistic example + ≥80% test coverage. Public release + blog post.
+- **v0.0.1** — scaffold (initial commit).
+- **v0.1.0** — working merge + halt_on_reject + 1 realistic example + 98% test coverage. Public release + blog post. **[released 2026-04-25]**
 - **v0.2.0** — async wrappers, more merge directives, integration recipes for Anthropic SDK + LangGraph.
 - **v1.0.0** — API stable, deployed in production by ≥3 outside users.

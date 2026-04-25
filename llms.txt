@@ -1,0 +1,59 @@
+# constitution-overlay
+
+> Kustomize-style merge of YAML rule layers + halt-on-reject enforced executor-side. Framework-agnostic Python library for agentic policy enforcement.
+
+## Overview
+
+`constitution-overlay` solves two problems for LLM agents:
+
+1. **Layered configuration** — a `constitution.yaml` defines invariants; a `corrections.yaml` overrides specific values per run. Merge is deterministic and order-aware (rightmost wins), same semantics as Kustomize strategic merge.
+2. **Executor-side enforcement** — `@halt_on_reject(constitution)` wraps agent actions. When a `PolicyReject` is raised inside, the decorator propagates it unconditionally. Unlike system prompt instructions, an executor-side `raise` cannot be bypassed by the LLM.
+
+## Tech stack
+
+- Language: Python 3.11+
+- Dependencies: `pyyaml` only
+- Build: hatchling
+- Distribution: PyPI (`constitution-overlay`)
+- License: MIT
+
+## Key files
+
+- `src/constitution_overlay/__init__.py` — public exports: `Constitution`, `halt_on_reject`, `PolicyReject`, `ConstitutionContext`, `merge_layers`
+- `src/constitution_overlay/constitution.py` — `Constitution` class, YAML loading, dot-notation query
+- `src/constitution_overlay/corrections.py` — `deep_merge`, `merge_layers`
+- `src/constitution_overlay/executor.py` — `halt_on_reject` decorator, `PolicyReject`, `ConstitutionContext`
+- `examples/basic_usage.py` — runnable end-to-end example
+- `DESIGN.md` — architecture rationale, prior art, API spec, roadmap
+
+## Public API
+
+```python
+from constitution_overlay import (
+    Constitution,        # load + merge layers
+    halt_on_reject,      # decorator — enforcement boundary
+    PolicyReject,        # exception — signals a policy halt
+    ConstitutionContext, # read-only view for use inside wrapped functions
+    merge_layers,        # convenience alias for Constitution.from_layers
+)
+```
+
+## Development
+
+```bash
+pip install -e ".[dev]"
+.venv/bin/pytest tests/ -q       # 69 tests
+.venv/bin/mypy --strict src/     # must be clean
+.venv/bin/ruff check src/ tests/ # must be clean
+```
+
+## Architecture
+
+Two-layer design: merge (pure function, deterministic) + enforcement (decorator, propagates unconditionally). The merge layer produces a `Constitution` object from N YAML/dict layers. The enforcement layer wraps executor functions — policy checks live inside the function, the decorator guarantees they cannot be swallowed.
+
+## Constraints
+
+- `src/` stays under 500 lines total
+- No framework dependencies (no Anthropic SDK, no LangGraph, no OpenAI)
+- `mypy --strict` must pass on every commit
+- Every public symbol gets a test before going into `__all__`

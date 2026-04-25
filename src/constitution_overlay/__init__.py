@@ -10,7 +10,7 @@ Public API:
 See DESIGN.md for the architecture rationale.
 """
 
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 
 from .constitution import Constitution
 from .corrections import merge_layers
