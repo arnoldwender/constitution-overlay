@@ -1,28 +1,46 @@
-# constitution-overlay — Claude Code instructions
-  
-  ## What this repo is
-  
-  A small Python library (~300 lines) implementing the **constitution + corrections overlay** pattern for agentic systems: Kustomize-style merge of YAML rule layers, with halt-on-reject enforced executor-side via `PolicyReject`.
-  
-  ## Rules
-  
-  1. **Keep it small.** `src/` should stay under 500 lines total. Push back if it grows past that.
-  2. **No framework dependencies.** The library must stay agnostic — no Anthropic SDK, no LangGraph, no OpenAI. Pure policy + enforcement layer.
-  3. **MIT license.** Do not change.
-  4. **Tests before features.** Each public symbol gets a test before going into `__all__`.
-  5. **Type hints everywhere.** `mypy --strict` must pass on every commit.
-  
-  ## Workflow
-  
-  - Author: Arnold Wender <arnold.wender@gmail.com>
-  - Commit format: `[Action] Brief description`
-  - No co-author tags, no AI branding
-  
-  ## Quick check
-  
-  ```bash
-  .venv/bin/pytest tests/ -q          # 69 tests, should all pass
-  .venv/bin/mypy --strict src/        # must be clean
-  .venv/bin/ruff check src/ tests/    # must be clean
-  ```
-  
+"""Corrections — Kustomize-style merge of overlays.
+
+Rules (Kustomize strategic-merge semantics, rightmost wins):
+- dicts: merged recursively; rightmost value wins per key.
+- lists: rightmost list replaces the earlier one (not appended).
+- scalars: rightmost wins.
+- None in a later layer explicitly sets the value to None.
+
+Deterministic given the layer order. No LLM-driven merge — debuggability
+requires the same input always producing the same output.
+"""
+
+from __future__ import annotations
+
+from copy import deepcopy
+from typing import Any
+
+
+def deep_merge(*layers: dict[str, Any]) -> dict[str, Any]:
+    """Deep-merge dicts left-to-right; rightmost value wins at each key.
+
+    Dicts are merged recursively. Lists and scalars are replaced by the
+    rightmost value. A later layer may explicitly set a key to None.
+    """
+    if not layers:
+        return {}
+
+    result: dict[str, Any] = {}
+    for layer in layers:
+        if not isinstance(layer, dict):
+            raise TypeError(f"all layers must be dicts; got {type(layer).__name__}")
+        for key, value in layer.items():
+            if (
+                key in result
+                and isinstance(result[key], dict)
+                and isinstance(value, dict)
+            ):
+                result[key] = deep_merge(result[key], value)
+            else:
+                result[key] = deepcopy(value)
+    return result
+
+
+def merge_layers(*layers: dict[str, Any]) -> dict[str, Any]:
+    """Merge constitution layers in order. Public alias for deep_merge."""
+    return deep_merge(*layers)
