@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "constitution-overlay: Kustomize-style YAML rule layering with executor-side halt-on-reject for LLM agents"
+abstract: "A small, framework-agnostic Python library implementing the constitution + corrections overlay pattern for agentic systems. Provides Kustomize-style merge of YAML rule layers and executor-side enforcement via a halt-on-reject decorator that LLMs cannot bypass."
+type: software
+authors:
+  - family-names: Wender
+    given-names: Arnold
+    email: arnold.wender@gmail.com
+    orcid: "https://orcid.org/0009-0005-1750-818X"
+version: 0.1.0
+date-released: 2026-04-25
+license: MIT
+repository-code: "https://github.com/arnoldwender/constitution-overlay"
+url: "https://github.com/arnoldwender/constitution-overlay"
+keywords:
+  - llm
+  - agents
+  - policy
+  - constitution
+  - kustomize
+  - llm-safety
+  - agentic-systems
