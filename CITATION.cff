@@ -10,14 +10,14 @@ authors:
     orcid: "https://orcid.org/0009-0005-1750-818X"
 version: 0.1.0
 date-released: 2026-04-25
-license: MIT
-doi: 10.5281/zenodo.19773588
+license: CC-BY-4.0
+doi: 10.5281/zenodo.20010764
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.19773588
+    value: 10.5281/zenodo.20010764
     description: "Concept DOI (always resolves to latest release)"
   - type: doi
-    value: 10.5281/zenodo.19773589
+    value: 10.5281/zenodo.20010765
     description: "Version DOI for v0.1.0"
 repository-code: "https://github.com/arnoldwender/constitution-overlay"
 url: "https://github.com/arnoldwender/constitution-overlay"
