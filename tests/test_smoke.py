@@ -7,4 +7,4 @@ import constitution_overlay
 
 
 def test_version_exposed() -> None:
-    assert constitution_overlay.__version__ == "0.0.1"
+    assert constitution_overlay.__version__ == "0.1.0"
