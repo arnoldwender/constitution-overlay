@@ -6,6 +6,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.1.2] — 2026-09-10
+
+Metadata-only release. `src/` is byte-identical to 0.1.1.
+
+### Fixed
+
+- **The PyPI project page said "Not on PyPI yet."** 0.1.1 was cut from the commit
+  *before* the README install line was corrected, and PyPI freezes a version's
+  description at upload — it cannot be replaced in place. So the page for a
+  published package carried a notice saying the package was not published.
+
+  That is precisely the failure this library exists to prevent, printed on its
+  own storefront. This release re-cuts the same code from a tree whose README is
+  true.
+
+### Note for future releases
+
+**Cut the tag after the README is correct, not before.** The README at the tagged
+commit becomes the project page for that version, permanently. A doc fix merged
+to `main` after the tag never reaches PyPI.
+
+---
+
 ## [0.1.1] — 2026-09-10
 
 First release published to PyPI. No library code changed — `src/` is byte-identical
