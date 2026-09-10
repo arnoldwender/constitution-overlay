@@ -33,7 +33,10 @@ Changelog = "https://github.com/arnoldwender/constitution-overlay/blob/main/CHAN
 dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
-    "ruff>=0.5",
+    # Con techo a proposito: el default de ruff cambia entre minors y el gate
+    # dejaria de significar lo mismo en local y en CI (medido 2026-09-10 —
+    # 0.15.12 daba verde donde 0.16.x daba 10 errores, mismo commit).
+    "ruff>=0.16,<0.17",
     "mypy>=1.8",
     "types-PyYAML>=6.0",
 ]
@@ -44,6 +47,30 @@ packages = ["src/constitution_overlay"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+# El conjunto de reglas se declara aqui y NO se hereda del default de ruff.
+# Medido 2026-09-10: con `ruff>=0.5` sin techo, la maquina local resolvio 0.15.12
+# y CI resolvio 0.16.x, cuyo default incluye mas reglas — el mismo commit daba
+# "All checks passed" en local y 10 errores en CI. Un gate cuya definicion cambia
+# segun el dia en que pip resuelva no es un gate.
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "TRY"]
+
+# TRY004 pide TypeError donde hay ValueError. Aqui es falso positivo y la
+# distincion es deliberada: TypeError cuando el ARGUMENTO viene mal tipado
+# (constitution.py:40 y :78), ValueError cuando el CONTENIDO de un fichero YAML
+# no es un mapping (:52 y :73) — eso no es un error de tipo de la firma, es un
+# dato invalido leido de disco. Es API publica: tests/test_constitution.py:55
+# asevera ValueError con match "mapping".
+ignore = [
+    "TRY004",
+    # TRY003 prohibe mensajes largos fuera de la clase de excepcion. Va en contra
+    # del diseno de esta libreria: el mensaje ES el producto cuando una politica
+    # rechaza. El propio README documenta
+    # `PolicyReject(f"too many files: {len(files)} > {limit}")` — un rechazo que
+    # no dice por que no sirve de nada a quien lo recibe.
+    "TRY003",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

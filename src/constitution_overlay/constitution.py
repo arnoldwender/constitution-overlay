@@ -34,14 +34,14 @@ class Constitution:
     # -- Constructors -------------------------------------------------------
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Constitution":
+    def from_dict(cls, d: dict[str, Any]) -> Constitution:
         """Return a Constitution wrapping a deep copy of `d`."""
         if not isinstance(d, dict):
             raise TypeError(f"expected dict, got {type(d).__name__}")
         return cls(copy.deepcopy(d))
 
     @classmethod
-    def from_yaml(cls, path: str | Path) -> "Constitution":
+    def from_yaml(cls, path: str | Path) -> Constitution:
         """Load YAML at `path` and return a Constitution."""
         p = Path(path)
         if not p.exists():
@@ -55,7 +55,7 @@ class Constitution:
         return cls(data)
 
     @classmethod
-    def from_layers(cls, *layers: "dict[str, Any] | str | Path") -> "Constitution":
+    def from_layers(cls, *layers: dict[str, Any] | str | Path) -> Constitution:
         """Kustomize-style merge of layers in order.
 
         Each layer may be a dict or a YAML file path (str or Path).
