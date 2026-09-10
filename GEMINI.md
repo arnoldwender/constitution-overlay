@@ -1,6 +1,6 @@
 # constitution-overlay — Gemini (Antigravity) instructions
 
-**Author:** Arnold Wender <arnold.wender@gmail.com>
+**Author:** Arnold Wender <arnoldwender@users.noreply.github.com>
 
 Repo-scoped context for Gemini / Antigravity. The authoritative rules for this
 repository live in [`CLAUDE.md`](CLAUDE.md) — read that first; this file only

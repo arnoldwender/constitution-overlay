@@ -14,7 +14,7 @@ A small Python library (~300 lines) implementing the **constitution + correction
 
 ## Workflow
 
-- Author: Arnold Wender <arnold.wender@gmail.com>
+- Author: Arnold Wender <arnoldwender@users.noreply.github.com>
 - Commit format: `[Action] Brief description`
 - No co-author tags, no AI branding
 

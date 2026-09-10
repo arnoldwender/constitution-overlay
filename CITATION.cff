@@ -6,7 +6,6 @@ type: software
 authors:
   - family-names: Wender
     given-names: Arnold
-    email: arnold.wender@gmail.com
     orcid: "https://orcid.org/0009-0005-1750-818X"
 version: 0.1.0
 date-released: 2026-04-25
