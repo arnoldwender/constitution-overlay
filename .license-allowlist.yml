@@ -1,0 +1,32 @@
+# Carve-out para el pre-commit license gate.
+#
+# Este repo es open source A PROPOSITO: figura en la Excepcion 2 de
+# ~/.claude/CLAUDE.md y su propio CLAUDE.md lo fija como regla 3 del proyecto
+# ("Do not change"). La premisa del gate — "el trabajo de WM es propietario" —
+# no aplica aqui, asi que los ficheros que declaran la licencia del proyecto no
+# son drift: son el proyecto.
+#
+# POR QUE HACE FALTA ESTE FICHERO y no basta la auto-exencion del gate:
+# `project_declared_oss_license()` lee la declaracion desde HEAD, pero solo de
+# cuatro fuentes — header de plugin PHP, package.json, composer.json y
+# LICENSING.md. Un proyecto Python declara su licencia en pyproject.toml, que no
+# esta entre ellas, asi que la exencion automatica nunca dispara aqui. Mientras
+# no se anada pyproject.toml como quinta fuente, la declaracion va en este
+# fichero. Autorizado por Arnold en sesion, 2026-09-10.
+#
+# Un glob por linea. '#' comenta. El gate lee de HEAD, nunca de lo staged, para
+# que ningun commit pueda autorizarse a si mismo.
+
+LICENSE
+pyproject.toml
+README.md
+CONTRIBUTING.md
+CLAUDE.md
+GEMINI.md
+AGENTS.md
+CITATION.cff
+
+# Este mismo fichero nombra licencias para declararlas legitimas, asi que el
+# detector de contenido lo encuentra a si mismo. Es la trampa conocida del
+# falsificador, no un hallazgo.
+.license-allowlist.yml

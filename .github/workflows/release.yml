@@ -1,0 +1,104 @@
+name: release
+
+# Publica en PyPI vía Trusted Publishing (OIDC) al empujar un tag vX.Y.Z.
+#
+# Requiere un "pending publisher" dado de alta UNA vez en pypi.org
+# (cuenta -> Publishing) con exactamente estos valores:
+#
+#   PyPI project name   constitution-overlay
+#   Repository URL      https://github.com/arnoldwender/constitution-overlay
+#   Workflow filename   release.yml            <- el nombre de ESTE fichero
+#   Environment name    pypi                   <- coincide con `environment:` abajo
+#
+# Sin tokens ni secrets: GitHub emite una identidad OIDC de 15 minutos.
+# Si renombras este fichero o el environment, el publisher deja de casar y el
+# upload es rechazado — son parte del contrato, no decoración.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  # Los gates corren ANTES de publicar. Una versión de PyPI no se puede
+  # reutilizar jamás, así que un release sin verificar es irreversible y ciego.
+  test:
+    name: gates
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: pytest
+        run: pytest tests/ -q
+
+      - name: mypy --strict
+        run: mypy --strict src/
+
+      - name: ruff
+        run: ruff check src/ tests/
+
+  build:
+    name: build distributions
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Build sdist + wheel
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+
+      # El tag manda sobre pyproject.toml: si no coinciden se publicaría una
+      # versión que nadie pidió. Falla ruidoso antes de subir nada.
+      # El nombre del tag entra por env, nunca interpolado dentro del run.
+      - name: Tag must match project version
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          tag="${TAG_NAME#v}"
+          proj="$(python -c 'import tomllib,pathlib; print(tomllib.loads(pathlib.Path("pyproject.toml").read_text())["project"]["version"])')"
+          if [ "$tag" != "$proj" ]; then
+            echo "::error::tag ${TAG_NAME} does not match pyproject version ${proj}"
+            exit 1
+          fi
+          echo "tag ${tag} == pyproject ${proj}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write        # obligatorio para OIDC; sin esto no hay identidad
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: dist
+          path: dist/
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
