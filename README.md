@@ -18,15 +18,10 @@ Why this matters: LLMs ignore system prompt instructions under task pressure. An
 ## Install
 
 ```bash
-pip install git+https://github.com/arnoldwender/constitution-overlay@v0.1.1
+pip install constitution-overlay
 ```
 
 Requires Python 3.11+. Only dependency: `pyyaml`.
-
-> Not on PyPI yet. `pip install constitution-overlay` will be the install line
-> once the first release is published; until then this README states what
-> actually works, because a package that promises an install command it cannot
-> honour is the exact failure this library exists to prevent.
 
 ---
 
