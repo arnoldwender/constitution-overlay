@@ -7,8 +7,9 @@ Python decorator still raises PolicyReject and the action does not execute.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from functools import wraps
-from typing import TYPE_CHECKING, Any, Callable, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 if TYPE_CHECKING:
     from .constitution import Constitution
@@ -27,7 +28,7 @@ class ConstitutionContext:
     (address, brand terms, prohibited ops) without importing Constitution.
     """
 
-    def __init__(self, constitution: "Constitution") -> None:
+    def __init__(self, constitution: Constitution) -> None:
         from .constitution import Constitution as _Constitution
 
         if not isinstance(constitution, _Constitution):
@@ -54,7 +55,7 @@ class ConstitutionContext:
         return f"ConstitutionContext({self._c!r})"
 
 
-def halt_on_reject(constitution: "Constitution") -> Callable[[F], F]:
+def halt_on_reject(constitution: Constitution) -> Callable[[F], F]:
     """Decorator factory that enforces the constitution executor-side.
 
     Wrap any agent action with this decorator. If the wrapped function raises

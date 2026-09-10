@@ -20,7 +20,7 @@ __all__: list[str] = [
     "Constitution",
     "ConstitutionContext",
     "PolicyReject",
+    "__version__",
     "halt_on_reject",
     "merge_layers",
-    "__version__",
 ]
